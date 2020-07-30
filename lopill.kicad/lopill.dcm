@@ -1,0 +1,14 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP STM32L052C8Tx
+D ARM Cortex-M0+ MCU, 64KB flash, 8KB RAM, 32MHz, 1.65-3.6V, 37 GPIO, LQFP-48
+K ARM Cortex-M0+ STM32L0 STM32L0x2
+F http://www.st.com/st-web-ui/static/active/en/resource/technical/document/datasheet/DM00108217.pdf
+$ENDCMP
+#
+$CMP VDD_USB
+D Power symbol creates a global label with name "VDD_USB"
+K power-flag
+$ENDCMP
+#
+#End Doc Library
