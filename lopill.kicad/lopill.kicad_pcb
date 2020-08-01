@@ -964,7 +964,7 @@
     (fp_text reference JP7 (at 2.5804 -0.3556 180) (layer F.SilkS) hide
       (effects (font (size 1 0.75) (thickness 0.15)))
     )
-    (fp_text value GNDA (at 2.682 0 180) (layer F.SilkS)
+    (fp_text value GNDA (at 2.682 0 180) (layer F.Fab) hide
       (effects (font (size 1 0.75) (thickness 0.15)))
     )
     (fp_arc (start -0.7 -0.3) (end -0.7 -1) (angle -90) (layer F.SilkS) (width 0.12))
@@ -981,6 +981,9 @@
     (fp_line (start 1.65 1.25) (end -1.65 1.25) (layer F.CrtYd) (width 0.05))
     (fp_poly (pts (xy -0.25 0.2) (xy 0.25 0.2) (xy 0.25 0.6) (xy -0.25 0.6)) (layer F.Cu) (width 0))
     (fp_poly (pts (xy -0.25 -0.6) (xy 0.25 -0.6) (xy 0.25 -0.2) (xy -0.25 -0.2)) (layer F.Cu) (width 0))
+    (fp_text user GNDA (at 2.682 0) (layer F.SilkS)
+      (effects (font (size 1 0.75) (thickness 0.15)))
+    )
     (pad 1 smd custom (at -0.65 0 270) (size 1 0.5) (layers F.Cu F.Mask)
       (net 1 GND) (zone_connect 2)
       (options (clearance outline) (anchor rect))
@@ -1157,7 +1160,7 @@
     (fp_text reference JP2 (at -2.4892 -0.4826 180) (layer F.SilkS) hide
       (effects (font (size 1 0.75) (thickness 0.15)))
     )
-    (fp_text value LED (at -2.7178 0 180) (layer F.SilkS)
+    (fp_text value LED (at -2.7178 0 180) (layer F.Fab) hide
       (effects (font (size 1 0.75) (thickness 0.15)))
     )
     (fp_arc (start -0.7 -0.3) (end -0.7 -1) (angle -90) (layer F.SilkS) (width 0.12))
@@ -1174,6 +1177,9 @@
     (fp_line (start 1.65 1.25) (end -1.65 1.25) (layer F.CrtYd) (width 0.05))
     (fp_poly (pts (xy -0.25 0.2) (xy 0.25 0.2) (xy 0.25 0.6) (xy -0.25 0.6)) (layer F.Cu) (width 0))
     (fp_poly (pts (xy -0.25 -0.6) (xy 0.25 -0.6) (xy 0.25 -0.2) (xy -0.25 -0.2)) (layer F.Cu) (width 0))
+    (fp_text user LED (at -2.7178 0 180) (layer F.SilkS)
+      (effects (font (size 1 0.75) (thickness 0.15)))
+    )
     (pad 1 smd custom (at -0.65 0 90) (size 1 0.5) (layers F.Cu F.Mask)
       (net 49 "Net-(JP2-Pad1)") (zone_connect 2)
       (options (clearance outline) (anchor rect))
@@ -2471,7 +2477,7 @@
   (segment (start 55.6156 39.6852) (end 56.896 39.6852) (width 0.25) (layer F.Cu) (net 52))
   (segment (start 54.581007 40.719793) (end 55.6156 39.6852) (width 0.25) (layer F.Cu) (net 52))
 
-  (zone (net 1) (net_name GND) (layer F.Cu) (tstamp 5F2533AC) (hatch edge 0.508)
+  (zone (net 1) (net_name GND) (layer F.Cu) (tstamp 5F2539CA) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 32) (thermal_gap 0.508) (thermal_bridge_width 0.508))
@@ -2900,7 +2906,7 @@
       )
     )
   )
-  (zone (net 1) (net_name GND) (layer B.Cu) (tstamp 5F2533A9) (hatch edge 0.508)
+  (zone (net 1) (net_name GND) (layer B.Cu) (tstamp 5F2539C7) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 32) (thermal_gap 0.508) (thermal_bridge_width 0.508))
