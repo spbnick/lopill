@@ -1,0 +1,38 @@
+
+power MCU from battery
+power USB function from USB
+
+So we might need a way to separate LDO from 3.3V and we might want to separate
+LDO from USB, if we want self-powered device.
+
+====
+
+We gotta specify what speed we are.
+We gotta specify if we're bus-powered or not.
+
+
+We gotta make sure we're not powering the bus.
+
+We want to support:
+    * VDD(A) from a source, VDD_USB from VBUS
+    * Both VDD(A) and VDD_USB from a source
+    * Both VDD(A) and VDD_USB from VBUS
+
+Since separate VDD_USB requires power sequencing, for simplicity's sake, we're
+only going to support in the first iteration:
+    * Both VDD(A) and VDD_USB from a source
+        * Can draw up to one unit from VBUS
+        * MUST NOT drive VBUS
+        * MUST NOT pull up a D line until VBUS is present
+    * Both VDD(A) and VDD_USB from VBUS
+
+How do we deal with VBUS detection?
+    If we're bus-powered:
+        * we can still check it before enabling the peripheral
+    If we're self-powered
+        * we have to check it before enabling the peripheral
+Why is it necessary?
+    Because we should not pull a D line before VBUS is present
+
+We gotta break VBUS, +5V and +3.3V out to the board pins, provide default
+configuration, but allow rearranging those.
