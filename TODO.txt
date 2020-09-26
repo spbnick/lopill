@@ -1,0 +1,29 @@
+Add board pin labels
+    - done
+Round board corners
+    - done
+Add tooling holes
+    - done
+Add silkscreen markers required by JLCPCB
+    - done
+Run DRC
+    - done
+Post board for review on reddit
+    - done
+Add a ferrite bead to VDDA
+    - postponed
+Add a polyfuse to VBUS
+    - postponed
+Model remaining parts
+    - added 8MHz crystal, postponed others
+Add JLCJLCJLCJLC placeholder
+    - done
+Run DRC
+    - done
+Export board files
+    - done
+Export SMT assembly files
+    - done
+Submit order to JLCPCB
+    23mm x 60mm
+    1.2mm thickness
