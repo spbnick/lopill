@@ -1,3 +1,4 @@
+#include <init.h>
 #include <rcc.h>
 #include <gpio.h>
 
@@ -5,6 +6,9 @@ int
 main(void)
 {
     volatile unsigned int i;
+
+    /* Basic init */
+    init();
 
     /* Enable clock to GPIO port C */
     RCC->iopenr |= RCC_IOPENR_IOPCEN_MASK;
@@ -17,7 +21,7 @@ main(void)
     /* Forever */
     while (1) {
         /* Wait */
-        for (i = 0; i < 100000; i++);
+        for (i = 0; i < 1600000; i++);
         /* Toggle PC13 */
         GPIO_C->odr ^= GPIO_ODR_OD13_MASK;
     }
