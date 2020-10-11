@@ -78,7 +78,7 @@ main(void)
              * Dynamic mode (alternating display of digits 1+3, 2+4),
              * No digits blanked, almost maximum current.
              */
-            0xe7,
+            0x27,
             /* Digit data */
             0xb0,
             0xbd,
