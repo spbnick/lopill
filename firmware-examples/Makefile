@@ -5,7 +5,8 @@ COMMON_CFLAGS = $(TARGET_CFLAGS) -Wall -Wextra -Werror -g3
 LIBS = -lstammer
 
 PROGRAMS = \
-    blink
+    blink \
+    i2c
 
 .PHONY: clean
 
