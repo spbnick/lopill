@@ -27,3 +27,5 @@ Export SMT assembly files
 Submit order to JLCPCB
     23mm x 60mm
     1.2mm thickness
+        - done
+Disconnect ground from USB shield
