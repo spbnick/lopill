@@ -6,7 +6,8 @@ LIBS = -lstammer
 
 PROGRAMS = \
     blink \
-    i2c
+    i2c \
+    tsc
 
 .PHONY: clean
 
