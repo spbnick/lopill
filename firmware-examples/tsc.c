@@ -1,6 +1,6 @@
 /*
- * Acquire one channel from the touch sense controller repeatedly, and output
- * the count onto an I2C 7-segment LED display.
+ * Acquire two channels from the touch sense controller repeatedly, and output
+ * the counts onto a four-digit 7-segment LED display controlled via I2C.
  */
 #include <init.h>
 #include <rcc.h>
@@ -122,10 +122,11 @@ display_set_digits(uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)
  * Set display number.
  *
  * @param number    The number to display.
+ * @param dot       If true, turn on the dot between digits 2 and 3.
  * @param red       If true, turn on the red LED.
  */
 static void
-display_set_number(uint16_t number, bool red)
+display_set_number(uint16_t number, bool dot, bool red)
 {
     /*
      * Hexadecimal digit bitmaps
@@ -150,7 +151,7 @@ display_set_number(uint16_t number, bool red)
     };
     display_set_digits(
         hexdigits[(number >> 12) & 0xf],
-        hexdigits[(number >> 8) & 0xf],
+        hexdigits[(number >> 8) & 0xf] | (dot ? 2 : 0),
         hexdigits[(number >> 4) & 0xf] | (red ? 2 : 0),
         hexdigits[number & 0xf]
     );
@@ -159,7 +160,7 @@ display_set_number(uint16_t number, bool red)
 /**
  * Configure the touch sense controller.
  * Use I/O Group 1 (PA0-PA3).
- * Use PA0 as the sensor and PA3 as the sampling cap.
+ * Use PA0 and PA1 as sensors and PA3 as the sampling cap.
  */
 static void
 tsc_init(void)
@@ -169,20 +170,27 @@ tsc_init(void)
 
     /* Configure PA0 and PA1 as sensors and PA3 as sampling cap */
     GPIO_A->moder = (GPIO_A->moder & ~(GPIO_MODER_MODE0_MASK |
+                                       GPIO_MODER_MODE1_MASK |
                                        GPIO_MODER_MODE3_MASK)) |
                     (GPIO_MODE_AF << GPIO_MODER_MODE0_LSB) |
+                    (GPIO_MODE_AF << GPIO_MODER_MODE1_LSB) |
                     (GPIO_MODE_AF << GPIO_MODER_MODE3_LSB);
     GPIO_A->otyper = (GPIO_A->otyper & ~(GPIO_OTYPER_OT0_MASK |
+                                         GPIO_OTYPER_OT1_MASK |
                                          GPIO_OTYPER_OT3_MASK)) |
                      (GPIO_OTYPE_PUSH_PULL << GPIO_OTYPER_OT0_LSB) |
+                     (GPIO_OTYPE_PUSH_PULL << GPIO_OTYPER_OT1_LSB) |
                      (GPIO_OTYPE_OPEN_DRAIN << GPIO_OTYPER_OT3_LSB);
     GPIO_A->ospeedr = (GPIO_A->ospeedr & ~(GPIO_OSPEEDR_OSPEED0_MASK |
+                                           GPIO_OSPEEDR_OSPEED1_MASK |
                                            GPIO_OSPEEDR_OSPEED1_MASK)) |
                       (GPIO_OSPEED_HIGH << GPIO_OSPEEDR_OSPEED0_LSB) |
                       (GPIO_OSPEED_HIGH << GPIO_OSPEEDR_OSPEED1_LSB);
     GPIO_A->afrl = (GPIO_A->afrl & ~(GPIO_AFRL_AFSEL0_MASK |
+                                     GPIO_AFRL_AFSEL1_MASK |
                                      GPIO_AFRL_AFSEL3_MASK)) |
                    (3 << GPIO_AFRL_AFSEL0_LSB) |
+                   (3 << GPIO_AFRL_AFSEL1_LSB) |
                    (3 << GPIO_AFRL_AFSEL3_LSB);
 
     /* Enable clock to the TSC */
@@ -206,10 +214,9 @@ tsc_init(void)
               TSC_CR_TSCE_MASK;
 
     /* Disable hysteresis on all used I/Os */
-    TSC->iohcr &= ~(TSC_IOHCR_G1_IO1_MASK | TSC_IOHCR_G1_IO4_MASK);
-
-    /* Enable PA0 as sensor channels */
-    TSC->ioccr |= TSC_IOCCR_G1_IO1_MASK;
+    TSC->iohcr &= ~(TSC_IOHCR_G1_IO1_MASK |
+                    TSC_IOHCR_G1_IO2_MASK |
+                    TSC_IOHCR_G1_IO4_MASK);
 
     /* Enable PA3 as sampling channel */
     TSC->ioscr |= TSC_IOSCR_G1_IO4_MASK;
@@ -219,61 +226,71 @@ tsc_init(void)
 }
 
 /**
- * Acquire a single reading from the TSC.
+ * Acquire a single reading of two channels from the TSC.
  *
- * @param perror    Location of an error flag, or NULL.
- *                  If not NULL, the flag is set to false if acquisition
- *                  succeeded, and to true if it failed.
+ * @param pcount1   Location for the acquired counter value for the first
+ *                  channel. Could be NULL to not have the value output.
+ * @param perror1   Location for the acquisition error flag for the first
+ *                  channel. Could be NULL to not have the flag output.
+ * @param pcount2   Location for the acquired counter value for the second
+ *                  channel. Could be NULL to not have the value output.
+ * @param perror2   Location for the acquisition error flag for the second
+ *                  channel. Could be NULL to not have the flag output.
  *
  * @return The acquired counter value.
  */
-static uint16_t
-tsc_acquire(bool *perror)
+static void
+tsc_acquire(uint16_t *pcount1, bool *perror1,
+            uint16_t *pcount2, bool *perror2)
 {
+    struct {
+        unsigned int    mask;
+        uint16_t       *pcount;
+        bool           *perror;
+    } channel_list[] = {
+        {TSC_IOCCR_G1_IO1_MASK, pcount1, perror1},
+        {TSC_IOCCR_G1_IO2_MASK, pcount2, perror2}
+    };
+    size_t i;
     unsigned int isr;
-    uint16_t count;
 
-    /* Start a new acquisition */
-    TSC->cr |= TSC_CR_START_MASK;
-    /* Wait for the acquisition to succeed or fail */
-    do {
-        isr = TSC->isr;
-    } while (!(isr & (TSC_ISR_EOAF_MASK | TSC_ISR_MCEF_MASK)));
-    /* Output the error flag, if requested */
-    if (perror) {
-        *perror = (isr & TSC_ISR_MCEF_MASK) != 0;
+    for (i = 0; i < ARRAY_SIZE(channel_list); i++) {
+        /* Enable the sensor channel */
+        TSC->ioccr |= channel_list[i].mask;
+        /* Start a new acquisition */
+        TSC->cr |= TSC_CR_START_MASK;
+        /* Wait for the acquisition to succeed or fail */
+        do {
+            isr = TSC->isr;
+        } while (!(isr & (TSC_ISR_EOAF_MASK | TSC_ISR_MCEF_MASK)));
+        /* Output the error flag, if requested */
+        if (channel_list[i].perror) {
+            *channel_list[i].perror = (isr & TSC_ISR_MCEF_MASK) != 0;
+        }
+        /* Output the acquired count, if requested */
+        if (channel_list[i].pcount != NULL) {
+            *channel_list[i].pcount = (uint16_t)TSC->iog1cr;
+        }
+        /* Reset error and acquisition flags */
+        TSC->icr |= TSC_ICR_MCEIC_MASK | TSC_ICR_EOAIC_MASK;
+        /* Disable the sensor channel */
+        TSC->ioccr &= ~channel_list[i].mask;
     }
-    /* Get the acquired count */
-    count = (uint16_t)TSC->iog1cr;
-    /* Reset error and acquisition flags */
-    TSC->icr |= TSC_ICR_MCEIC_MASK | TSC_ICR_EOAIC_MASK;
-
-    return count;
 }
 
 int
 main(void)
 {
-    uint16_t value_list[64] = {0,};
-    uint32_t avg;
-    size_t pos = 0;
-    size_t i;
-    bool error;
+    uint16_t count1, count2;
+    bool error1, error2;
 
     init();
     display_init();
     tsc_init();
 
     while (true) {
-        value_list[pos] = tsc_acquire(&error);
-        avg = 0;
-        for (i = 0; i < ARRAY_SIZE(value_list); i++) {
-            avg += value_list[i];
-        }
-        display_set_number(avg / ARRAY_SIZE(value_list), error);
-        pos++;
-        if (pos >= ARRAY_SIZE(value_list)) {
-            pos = 0;
-        }
+        tsc_acquire(&count1, &error1, &count2, &error2);
+        display_set_number(((count1 & 0xff0) << 4) | ((count2 & 0xff0) >> 4),
+                           true, error1 || error2);
     }
 }
