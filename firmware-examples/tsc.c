@@ -281,8 +281,8 @@ tsc_acquire(uint16_t *pcount1, bool *perror1,
 int
 main(void)
 {
-    uint16_t count1, count2;
-    bool error1, error2;
+    uint16_t count1 = 0, count2 = 0;
+    bool error1 = false, error2 = false;
 
     init();
     display_init();
