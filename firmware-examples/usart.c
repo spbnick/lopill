@@ -28,7 +28,7 @@ main(void)
                                            GPIO_OSPEEDR_OSPEED15_MASK)) |
                       (GPIO_OSPEED_HIGH << GPIO_OSPEEDR_OSPEED14_LSB) |
                       (GPIO_OSPEED_HIGH << GPIO_OSPEEDR_OSPEED15_LSB);
-    GPIO_A->afrh = (GPIO_A->afrl &
+    GPIO_A->afrh = (GPIO_A->afrh &
                     ~(GPIO_AFRH_AFSEL14_MASK | GPIO_AFRH_AFSEL15_MASK)) |
                    (4 << GPIO_AFRH_AFSEL14_LSB) |
                    (4 << GPIO_AFRH_AFSEL15_LSB);
