@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name lopill)(type Legacy)(uri ${KIPRJMOD}/lopill.lib)(options "")(descr ""))
+  (lib (name lopill-rescue)(type Legacy)(uri ${KIPRJMOD}/lopill-rescue.lib)(options "")(descr ""))
 )
