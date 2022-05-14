@@ -100,19 +100,14 @@ Connection ~ 9200 4550
 $Comp
 L power:GND #PWR0109
 U 1 1 5F02FFC2
-P 2550 5500
-F 0 "#PWR0109" H 2550 5250 50  0001 C CNN
-F 1 "GND" H 2555 5327 50  0000 C CNN
-F 2 "" H 2550 5500 50  0001 C CNN
-F 3 "" H 2550 5500 50  0001 C CNN
-	1    2550 5500
+P 2600 5500
+F 0 "#PWR0109" H 2600 5250 50  0001 C CNN
+F 1 "GND" H 2605 5327 50  0000 C CNN
+F 2 "" H 2600 5500 50  0001 C CNN
+F 3 "" H 2600 5500 50  0001 C CNN
+	1    2600 5500
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2500 5500 2550 5500
-Connection ~ 2550 5500
-Wire Wire Line
-	2550 5500 2600 5500
 $Comp
 L power:GND #PWR0110
 U 1 1 5F071D0C
@@ -4898,19 +4893,6 @@ F 3 "~" H 1000 3700 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector:USB_B_Micro J3
-U 1 1 5F02DD0A
-P 2600 5100
-F 0 "J3" H 2657 5567 50  0000 C CNN
-F 1 "USB_B_Micro" H 2657 5476 50  0000 C CNN
-F 2 "lopill:USB_Micro-B_HRO_U-D-M5DD-W-1_Vertical" H 2750 5050 50  0001 C CNN
-F 3 "https://datasheet.lcsc.com/szlcsc/1811151141_Korean-Hroparts-Elec-U-D-M5DD-W-1_C145795.pdf" H 2750 5050 50  0001 C CNN
-F 4 "C145795" H 2600 5100 50  0001 C CNN "LCSC"
-F 5 "Korean Hroparts Elec U-D-M5DD-W-1" H 2600 5100 50  0001 C CNN "Product"
-	1    2600 5100
-	1    0    0    -1  
-$EndComp
-$Comp
 L Device:Crystal Y2
 U 1 1 5F02594C
 P 6000 1950
@@ -5023,4 +5005,18 @@ Text Label 7700 2450 0    50   ~ 0
 LED_USER
 Text Label 8200 2450 0    50   ~ 0
 PC13
+$Comp
+L lopill-rescue:USB_B_Micro-Connector J3
+U 1 1 5F02DD0A
+P 2600 5100
+F 0 "J3" H 2657 5567 50  0000 C CNN
+F 1 "USB_B_Micro" H 2657 5476 50  0000 C CNN
+F 2 "lopill:USB_Micro-B_HRO_U-D-M5DD-W-1_Vertical" H 2750 5050 50  0001 C CNN
+F 3 "https://datasheet.lcsc.com/szlcsc/1811151141_Korean-Hroparts-Elec-U-D-M5DD-W-1_C145795.pdf" H 2750 5050 50  0001 C CNN
+F 4 "C145795" H 2600 5100 50  0001 C CNN "LCSC"
+F 5 "Korean Hroparts Elec U-D-M5DD-W-1" H 2600 5100 50  0001 C CNN "Product"
+	1    2600 5100
+	1    0    0    -1  
+$EndComp
+NoConn ~ 2500 5500
 $EndSCHEMATC
