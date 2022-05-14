@@ -5268,7 +5268,7 @@
     (property "Value" "8MHz" (id 1) (at 155.7274 35.433 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "lopill:Crystal_SMD_5032-2Pin_5.0x3.2mm_YXC" (id 2) (at 152.4 34.29 0)
+    (property "Footprint" "spbnick:Crystal_SMD_5032-2Pin_5.0x3.2mm_YXC" (id 2) (at 152.4 34.29 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://datasheet.lcsc.com/szlcsc/1903061615_Yangxing-Tech-X50328MSB2GI_C115962.pdf" (id 3) (at 152.4 34.29 0)
@@ -5963,7 +5963,7 @@
     (uuid 00000000-0000-0000-0000-00005f927b2e)
     (property "Reference" "SW1" (id 0) (at 144.78 77.851 0))
     (property "Value" "Reset" (id 1) (at 144.78 80.1624 0))
-    (property "Footprint" "lopill:SW_Push_1P1T_NO_5.1x5.1mm_H2.5mm" (id 2) (at 144.78 80.01 0)
+    (property "Footprint" "spbnick:SW_Push_1P1T_NO_5.1x5.1mm_H2.5mm" (id 2) (at 144.78 80.01 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://datasheet.lcsc.com/szlcsc/XKB-TS-1187A-C-E-A_C318887.pdf" (id 3) (at 144.78 80.01 0)
@@ -6402,7 +6402,7 @@
       (reference "R3") (unit 1) (value "10K") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/00000000-0000-0000-0000-00005f927b2e"
-      (reference "SW1") (unit 1) (value "Reset") (footprint "lopill:SW_Push_1P1T_NO_5.1x5.1mm_H2.5mm")
+      (reference "SW1") (unit 1) (value "Reset") (footprint "spbnick:SW_Push_1P1T_NO_5.1x5.1mm_H2.5mm")
     )
     (path "/00000000-0000-0000-0000-00005f01e784"
       (reference "U1") (unit 1) (value "XC6206PxxxMR") (footprint "Package_TO_SOT_SMD:SOT-23")
@@ -6411,7 +6411,7 @@
       (reference "U2") (unit 1) (value "STM32L052C8Tx") (footprint "Package_QFP:LQFP-48_7x7mm_P0.5mm")
     )
     (path "/00000000-0000-0000-0000-00005f03b734"
-      (reference "Y1") (unit 1) (value "8MHz") (footprint "lopill:Crystal_SMD_5032-2Pin_5.0x3.2mm_YXC")
+      (reference "Y1") (unit 1) (value "8MHz") (footprint "spbnick:Crystal_SMD_5032-2Pin_5.0x3.2mm_YXC")
     )
     (path "/00000000-0000-0000-0000-00005f02594c"
       (reference "Y2") (unit 1) (value "32.768KHz") (footprint "Crystal:Crystal_SMD_3215-2Pin_3.2x1.5mm")
